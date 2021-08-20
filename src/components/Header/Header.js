@@ -3,7 +3,6 @@ import React, {useEffect} from 'react';
 import classNames from "classnames";
 import {GoogleLogout} from "react-google-login";
 
-
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from "@material-ui/core/AppBar";
@@ -15,9 +14,10 @@ import styles from "assets/jss/material-kit-react/components/headerStyle.js";
 
 const useStyles = makeStyles(styles);
 
+
 export default function Header(props) {
     const classes = useStyles();
-    const {setEmail, isLoggedIn, setIsLoggedIn} = props;
+    const {setEmail, isSignedIn, setIsLoggedIn, firebase} = props;
 
     const logout = () => {
         setEmail("");
@@ -68,13 +68,9 @@ export default function Header(props) {
             )}
             </div>
             {
-                isLoggedIn ? (
-                    <GoogleLogout
-                        clientId="230939070961-rffr63fitbrvv09fdanau0gst5a68lt3.apps.googleusercontent.com"
-                        buttonText="Logout"
-                        onLogoutSuccess={logout}
-                        >
-                    </GoogleLogout>) : null
+                isSignedIn ? (
+                    <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
+                    ) : null
             }
         </Toolbar>
         </AppBar>
