@@ -16,13 +16,14 @@ import GridItem from "components/Grid/GridItem.js";
 import {GoogleLogin} from "react-google-login";
 import Tilt from 'react-tilt';
 
+import Dashboard from './Section/Dashboard';
+
 import styles from "assets/jss/material-kit-react/views/landingPage.js"
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import CircularProgress from "@material-ui/core/CircularProgress";
 const dashboardRoutes = [];
 
 const useStyles = makeStyles(styles);
@@ -45,27 +46,29 @@ const uiConfig = {
 
 
 
+
 export default function LandingPage(props) {
   
   const classes = useStyles();
   const { ...rest } = props;
-  const [email, setEmail] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [googleloading, setGoogleLoading] = useState(false);
-  // const [facebookloading, setFacebookLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
-
-  const  responseGoogleSignup =  res => {
-    console.log(res.Ts.Et);
-    setEmail(res.Ts.Et);
-    console.log(email);
-    setIsLoggedIn(true);
-  }
 
 
 
   const phone = useMediaQuery("(max-width: 700px)");
+
+  //  insert the data into forestore collection
+  const insertData = (data) => {
+    firebase.firestore().collection('hostel-info').add(data)
+    .then(function(docRef) {
+      console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+      console.error("Error adding document: ", error);
+    });
+  }
 
   // Listen to the Firebase Auth state and set the local state.
   useEffect(() => {
@@ -93,19 +96,18 @@ export default function LandingPage(props) {
               }
         }
         {...rest}
-        isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
-        setEmail={setEmail}
+        isSignedIn={isSignedIn}
+        setIsSignedIn={setIsSignedIn}
+        firebase={firebase}
       />
       <div style={{marginTop: "150px"}}></div>
       <div className={classNames(classes.main, classes.mainRaised)} style={{marginBottom: "50px",marginTop: "50px"}}>
         <div className={classes.container} id="section1">
           {isSignedIn ? (
             // if user is Logged in then show the main contents
-            <div>
-              <h2>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</h2>
-              <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
-            </div>
+            <Dashboard
+              firebase = {firebase}
+              />
           ) : (
             <div className={classes.section}>
               <GridContainer justify="center">
@@ -162,23 +164,8 @@ export default function LandingPage(props) {
                           >
                             Login to continue
                           </Typography>
-                          <div
-                            style={{ marginTop: "25px", marginBottom: "10px" }}
-                          >
-                            {googleloading ? (
-                              <CircularProgress style={{ color: "green" }} />
-                            ) : (
-                              <span
-                                onClick={() => {
-                                  setGoogleLoading(true);
-                                  setTimeout(() => {
-                                    setGoogleLoading(false);
-                                  }, 10000);
-                                }}
-                              >
-                                <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-                              </span>
-                            )}
+                          <div style={{ marginTop: "25px", marginBottom: "10px" }}>
+                            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
                           </div>
                         </CardContent>
                       </Card>
