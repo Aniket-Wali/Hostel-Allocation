@@ -4,6 +4,7 @@ var firebaseConfig = {
   projectId: "hostel-allocation-1956d",
   storageBucket: "hostel-allocation-1956d.appspot.com",
   messagingSenderId: "741889483667",
+  databaseURL: "https://hostel-allocation-1956d-default-rtdb.firebaseio.com/",
   appId: "1:741889483667:web:c28de9b81a36df8244fe66"
 };
 
