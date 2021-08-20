@@ -9,41 +9,27 @@ export default function Dashboard(props) {
 
     const getCollection = async (collection) => {
         const snapshot = await firebase.firestore().collection(collection).get();
+        let flag = 0
         snapshot.forEach(doc => {
+            // print the data id and value
+            console.log(`${doc.id} => ${doc.data().isAllocated}`);
             if(doc.id == firebase.auth().currentUser.uid) {
-                return {state : true,
-                        snapshot : snapshot};
+                if(doc.data().isAllocated == true) {
+                    flag = 1;
+                    console.log("Hello")
+                    setIsAllocated(true);
+                }
             }
         });
-        return {state: false,
-                snapshot : snapshot};
+        if(flag == 0) {
+            const temp = firebase.firestore().collection(collection).doc(firebase.auth().currentUser.uid);
+            temp.set({isAllocated: false});
+        }
     }
 
     // get firestore data only once
     useEffect(() => {
-        getCollection('hostel-info').then(response => {
-            if (!response.state) {
-                console.log("cjncj");
-                let data = {
-                    isAllocated: false
-                }
-                firebase.firestore().collection('hostel-info').doc(firebase.auth().currentUser.uid).set(data)
-                    .then(function(docRef) {
-                    console.log("Document written with ID: ", docRef.id);
-                    })
-                    .catch(function(error) {
-                    console.error("Error adding document: ", error);
-                    });
-            } else {
-                const {snapshot} = response;
-                // print the data of snapshot
-                snapshot.forEach(doc => {
-                    if(doc.id == firebase.auth().currentUser.uid) 
-                        if(doc.isAllocated === true)
-                            setIsAllocated(true);
-                });
-            }
-        })
+        getCollection('hostel-info')
     }, []);
 
     return (
@@ -52,10 +38,14 @@ export default function Dashboard(props) {
                 isAllocated ? (
                     <Allocated 
                         firebase={firebase}
+                        isAllocated={isAllocated}
+                        setIsAllocated={setIsAllocated}
                         />
                 ): (
                     <HostelAllocation 
                         firebase={firebase}
+                        isAllocated={isAllocated}
+                        setIsAllocated={setIsAllocated}
                         />
                 )
             }
