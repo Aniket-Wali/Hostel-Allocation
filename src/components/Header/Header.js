@@ -69,7 +69,7 @@ export default function Header(props) {
             </div>
             {
                 isSignedIn ? (
-                    <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
+                    <a style={{cursor: 'pointer'}} onClick={() => firebase.auth().signOut()}>Sign-out</a>
                     ) : null
             }
         </Toolbar>
