@@ -42,6 +42,54 @@ export default function HostelAllocation(props) {
                 >
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
+                    <div className="Tilt-inner"style={{ display: "flex", flexDirection:"row",justifyContent:"center", alignItems:"center"}}>
+                        <div style={{ marginLeft: "50px", marginRight: "50px", cursor:"pointer" }}>
+                            <Card
+                            className={classes.root}
+                            style={{
+                            textAlign: "center",
+                            margin: "15vh 0",
+                            minWidth: 'auto',
+                            boxShadow: "0 6px 20px rgba(200, 230, 201, 0.5)",
+                            border: "2px #4CAF50 solid",
+                            borderRadius: "10px"
+                            }}
+                            >
+                                <CardContent>
+                                <Typography
+                                    variant="h5"
+                                    component="h2"
+                                    style={{ color: "#388E3C" }}
+                                >
+                                    Girls Hostel
+                                </Typography>
+                                </CardContent>
+                            </Card>
+                        </div>
+                        <div style={{ marginLeft: "50px", marginRight: "50px", cursor:"pointer"}}>
+                            <Card
+                            className={classes.root}
+                            style={{
+                            textAlign: "center",
+                            margin: "15vh 0",
+                            minWidth: 'auto',
+                            boxShadow: "0 6px 20px rgba(200, 230, 201, 0.5)",
+                            border: "2px #4CAF50 solid",
+                            borderRadius: "10px"
+                            }}
+                        >
+                            <CardContent>
+                            <Typography
+                                variant="h5"
+                                component="h2"
+                                style={{ color: "#388E3C" }}
+                            >
+                                Boys Hostel
+                            </Typography>
+                            </CardContent>
+                        </Card>
+                        </div>
+                    </div>
                 </GridItem>
             </GridContainer>
     )

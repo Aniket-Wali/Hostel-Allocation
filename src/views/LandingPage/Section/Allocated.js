@@ -37,7 +37,7 @@ export default function Allocated(props) {
                 xs={12}
                 sm={12}
                 md={12}
-                style={{ textAlign: "center" }}
+                style={{ textAlign: "left" }}
                 >
                 <h4
                     className={classes.title}
